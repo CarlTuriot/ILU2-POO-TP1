@@ -3,20 +3,23 @@ package villagegaulois;
 import personnages.Gaulois;
 
 public class Marche {
-	private int nombreEtals;
+	private int nombreEtal;
+	private int nombreEtalVide;
 	private Etal[] etals;
 	
 	public Marche(int nombreEtal) {
-		this.nombreEtals = nombreEtals;
-		etals = new Etal[nombreEtals];
+		this.nombreEtal = nombreEtal;
+		this.nombreEtalVide = nombreEtal;
+		etals = new Etal[nombreEtal];
 	}
 	
 	void utiliserEtal(int indiceEtal, Gaulois vendeur,String produit, int nbProduit) {
 		etals[indiceEtal].occuperEtal(vendeur, produit, nbProduit);
+		nombreEtalVide--;
 	}
 	
 	int trouverEtalLibre() {
-		for(int i=0;i<nombreEtals;i++) {
+		for(int i=0;i<nombreEtal;i++) {
 			if (!etals[i].isEtalOccupe())return i;
 		}
 		return -1;
@@ -25,7 +28,7 @@ public class Marche {
 	//modification certaines
 	Etal[] trouverEtals(String produit) {
 		int nbEtalValid=0;
-		for(int i=0;i<nombreEtals;i++) {
+		for(int i=0;i<nombreEtal;i++) {
 			if (etals[i].contientProduit(produit)) {
 				nbEtalValid++;
 			}
@@ -33,7 +36,7 @@ public class Marche {
 		Etal[] etalsValid= new Etal[nbEtalValid];
 		int indiceEtal=0;
 		
-		for(int j=0;j<nombreEtals;j++) {
+		for(int j=0;j<nombreEtal;j++) {
 			if (etals[j].contientProduit(produit)) {
 				etalsValid[indiceEtal]=etals[j];
 				indiceEtal++;
@@ -43,12 +46,23 @@ public class Marche {
 	}
 	
 	Etal trouverVendeur(Gaulois gaulois) {
-		for(int i=0;i<nombreEtals;i++) {
+		for(int i=0;i<nombreEtal;i++) {
 			if (gaulois.equals(etals[i].getVendeur()))return etals[i];
 		}
 		return null;
 	}
 	
-	
+	StringBuilder afficherMarche(){
+		StringBuilder etalsOccupe= new StringBuilder("Les etals du marche son les suivants:\n");
+		for(int i=0;i<nombreEtal;i++) {
+			if (etals[i].isEtalOccupe()) {
+				etalsOccupe.append(etals[i].afficherEtal());
+			}
+		}
+		if(nombreEtalVide!=0) {
+			etalsOccupe.append("Il reste " + nombreEtalVide + "etals non utilises dans le marche.\n");
+		}
+		return etalsOccupe;
+	}
 	
 }
