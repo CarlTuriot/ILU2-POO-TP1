@@ -44,7 +44,7 @@ public class Etal {
 			return "L'étal de " + vendeur.getNom() + " est garni de " + quantite
 					+ " " + produit + "\n";
 		}
-		return "L'étal est libre";
+		return "L'étal est libre \n";
 	}
 
 	public String acheterProduit(int quantiteAcheter, Gaulois acheteur) {
@@ -53,7 +53,7 @@ public class Etal {
 			chaine.append(acheteur.getNom() + " veut acheter " + quantiteAcheter
 					+ " " + produit + " à " + vendeur.getNom());
 			if (quantite == 0) {
-				chaine.append(", malheureusement il n'y en a plus !");
+				chaine.append(", malheureusement il n'y en a plus ! \n");
 				quantiteAcheter = 0;
 			}
 			if (quantiteAcheter > quantite) {

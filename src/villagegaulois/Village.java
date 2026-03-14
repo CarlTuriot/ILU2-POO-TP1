@@ -53,41 +53,54 @@ public class Village {
 			chaine.append("Au village du chef " + chef.getNom()
 					+ " vivent les légendaires gaulois :\n");
 			for (int i = 0; i < nbVillageois; i++) {
-				chaine.append("- " + villageois[i].getNom() + "\n");
+				chaine.append("- ").append(villageois[i].getNom()).append("\n");
 			}
 		}
 		return chaine.toString();
 	}
 	
 	public String installerVendeur(Gaulois vendeur, String produit, int nbProduit) {
-		StringBuilder chaine = new StringBuilder(vendeur + "cherche un endroit pour vendre " + nbProduit + produit + ".\n");
+		StringBuilder chaine = new StringBuilder(vendeur.getNom() + " cherche un endroit pour vendre " + nbProduit + " " + produit + ".\n");
 		int indiceEtal;
 		indiceEtal=marche.trouverEtalLibre();
 		if(indiceEtal!=-1) {
 			marche.utiliserEtal(indiceEtal, vendeur,produit, nbProduit);
-			chaine.append("Le vendeur " + vendeur + "vend des fleurs à l'étal n°" + indiceEtal + ".\n");
+			chaine.append("Le vendeur " + vendeur.getNom() + " vend des fleurs à l'étal n°" + (indiceEtal+1) + ".\n");
 		} else {
-			chaine.append("le vendeur " + vendeur + "n'a pas trouver d'etal libre .\n");
+			chaine.append("le vendeur " + vendeur.getNom() + " n'a pas trouver d'etal libre .\n");
 		}
 		return chaine.toString();
 	}
 	
-	public String rechercherVendeursProduit(String produit) {
-		StringBuilder chaine = new StringBuilder();
-		Etal [] etalsValid=marche.trouverEtals(produit);
-		int nbEtalValid=etalsValid.length;
-		
-		if(nbEtalValid==0) {
-			chaine.append("Il n'y a pas de vendeur qui propose des " + produit + "au marché.\n");
-		} else if(nbEtalValid==1){
-			chaine.append("Seul le vendeur " + etalsValid[0].getVendeur() +"propose des " + produit + "au marché.\n");
-		} else {
-			chaine.append("Les vendeurs qui vendent des " + produit + "au marché sont:");
-			for(int i=0;i<nbEtalValid;i++) {
-				chaine.append(etalsValid[i].getVendeur() + ", ");
+		public String rechercherVendeursProduit(String produit) {
+			StringBuilder chaine = new StringBuilder();
+			Etal [] etalsValid=marche.trouverEtals(produit);
+			int nbEtalValid=etalsValid.length;
+			
+			if(nbEtalValid==0) {
+				chaine.append("Il n'y a pas de vendeur qui propose des " + produit + " au marché.\n");
+			} else if(nbEtalValid==1){
+				chaine.append("Seul le vendeur " + etalsValid[0].getVendeur().getNom() +" propose des " + produit + " au marché.\n");
+			} else {
+				chaine.append("Les vendeurs qui vendent des " + produit + " au marché sont: \n");
+				for(int i=0;i<nbEtalValid;i++) {
+					chaine.append("- ").append(etalsValid[i].getVendeur().getNom()).append("\n");
+				}
 			}
+			return chaine.toString();
 		}
-		return chaine.toString();
+		
+	public Etal rechercherEtal(Gaulois vendeur) {
+		return marche.trouverVendeur(vendeur);
+	}
+	
+	public String partirVendeur(Gaulois vendeur) {
+		Etal etal = rechercherEtal(vendeur);
+		return etal.libererEtal();
+	}
+	
+	public String afficherMarche() {
+		return marche.afficherMarche();
 	}
 	
 }
