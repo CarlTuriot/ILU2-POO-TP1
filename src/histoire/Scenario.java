@@ -1,5 +1,6 @@
 package histoire;
 
+import exceptions.VillageSansChefException;
 import personnages.Chef;
 import personnages.Druide;
 import personnages.Gaulois;
@@ -24,7 +25,12 @@ public class Scenario {
 		village.ajouterHabitant(obelix);
 		village.ajouterHabitant(druide);
 		village.ajouterHabitant(abraracourcix);
-		village.afficherVillageois();
+		try {
+			village.afficherVillageois();
+		} catch (VillageSansChefException e) {
+			e.printStackTrace();
+			System.out.println("le village n'a pas de chef");
+		}
 		
 //		System.out.println(village.afficherVillageois());
 
@@ -37,9 +43,19 @@ public class Scenario {
 
 		System.out.println(village.rechercherVendeursProduit("fleurs"));
 		Etal etalFleur = village.rechercherEtal(bonemine);
-		System.out.println(etalFleur.acheterProduit(10, abraracourcix));
-		System.out.println(etalFleur.acheterProduit(15, obelix));
-		System.out.println(etalFleur.acheterProduit(15, assurancetourix));
+		
+		try {
+			System.out.println(etalFleur.acheterProduit(10, abraracourcix));
+			System.out.println(etalFleur.acheterProduit(15, obelix));
+			System.out.println(etalFleur.acheterProduit(15, assurancetourix));
+		} catch(IllegalArgumentException e) {
+			e.printStackTrace();
+			System.out.println("quantité inférieure a 1");
+		} catch(IllegalStateException e) {
+			e.printStackTrace();
+			System.out.println("l'étal n'est pas occupé");
+		}
+		
 		System.out.println(village.partirVendeur(bonemine));
 		System.out.println(village.afficherMarche());
 	}
